@@ -34,12 +34,7 @@ public class FelineTest {
         // Act
         String family = feline.getFamily();
         // Assert
-        assertAll(
-                () -> assertEquals("Кошачьи", family, "Семейство должно быть 'Кошачьи'"),
-                () -> assertNotNull(family, "Семейство не должно быть null"),
-                () -> assertFalse(family.isEmpty(), "Семейство не должно быть пустой строкой"),
-                () -> assertTrue(family.equals("Кошачьи"), "Значение должно точно совпадать")
-        );
+        assertEquals("Кошачьи", family, "Семейство должно быть 'Кошачьи'");
     }
 
     @Test

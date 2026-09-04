@@ -3,7 +3,8 @@ package com.example;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-//import org.junit.jupiter.params.provider.ValueSource;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mock;
 //import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -31,23 +32,22 @@ public class LionParameterizedTest {
         assertEquals(expectedHasMane, actualHasMane,
                 "Пол '" + sex + "' должен давать hasMane = " + expectedHasMane);
     }
+//тест исключения
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "Мужчина",
+            "Женщина",
+            "Male",
+            "Female",
+            "''",
+            "   "
+    })
+    void shouldThrowException_whenInvalidSex(String invalidSex) {
 
-    // Проверяем getFood() с разными рационами
- /*   @ParameterizedTest
-    @CsvSource(value = {
-            "Трава|Различные растения",
-            "Животные|Птицы|Рыба"
-    }, delimiter = '\u0000')
-    void getFood_shouldReturnGivenDiet(String foodItems) throws Exception {
-        // Arrange
-        List<String> expectedFood = List.of(foodItems);
-        Mockito.doReturn(expectedFood).when(feline).getFood("Хищник");
-        Lion lion = new Lion("Самец", feline);
-        // Act
-        List<String> actualFood = lion.getFood();
-        // Assert
-        assertEquals(expectedFood, actualFood,
-                "Lion должен возвращать точно такой же рацион, как и Feline");
-        Mockito.verify(feline).getFood("Хищник");
-    }*/
+        Exception exception = assertThrows(Exception.class,
+                () -> new Lion(invalidSex, feline), "Должно выбрасывать исключение для некорректного пола"
+        );
+        // Проверяем сообщение
+        assertEquals("Используйте допустимые значения пола животного - самец или самка", exception.getMessage());
+    }
 }
